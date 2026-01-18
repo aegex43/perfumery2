@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --primary: #d4af37;
+  /* Gold remains as accent */
+  --primary-hover: #b5952f;
+
+  --card-bg: #f5f5f5;
+  --card-border: #e5e5e5;
+
+  --font-heading: 'Times New Roman', serif;
+  /* Placeholder for elegant font */
+  --font-body: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  color: #000000 !important;
+  background: #ffffff !important;
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Utilities */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Visual Effects */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
