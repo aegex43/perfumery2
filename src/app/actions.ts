@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache';
 export async function uploadPerfumes(data: Perfume[]) {
     try {
         // Clear existing data
-        db.delete(perfumes).run();
+        await db.delete(perfumes).run();
 
         // Map data to schema structure (Drizzle handles column mapping if keys match schema defines)
         // Note: Our schema keys match the Perfume interface keys exactly
@@ -19,7 +19,7 @@ export async function uploadPerfumes(data: Perfume[]) {
 
         // Batch insert
         if (data.length > 0) {
-            db.insert(perfumes).values(data as any).run();
+            await db.insert(perfumes).values(data as any).run();
         }
 
         revalidatePath('/');
