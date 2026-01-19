@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Elixir | Premium Fragrances',
+  title: 'Perfumery | Premium Fragrances',
   description: 'A curated collection of exclusive perfumes and decants.',
 };
 
