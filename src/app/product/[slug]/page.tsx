@@ -13,15 +13,26 @@ export default function ProductDetail() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Decode slug and find perfume
-        const slug = typeof params.slug === 'string' ? decodeURIComponent(params.slug) : '';
-        const saved = localStorage.getItem('perfume_data');
-        if (saved) {
-            const allPerfumes: Perfume[] = JSON.parse(saved);
-            const found = allPerfumes.find(p => p.name === slug);
-            setPerfume(found || null);
-        }
-        setLoading(false);
+        const fetchPerfume = async () => {
+            const slug = typeof params.slug === 'string' ? decodeURIComponent(params.slug) : '';
+            if (!slug) {
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const { getPerfumeBySlug } = await import('@/app/actions');
+                // The server action does the search.
+                const found = await getPerfumeBySlug(slug);
+                setPerfume(found || null);
+            } catch (e) {
+                console.error("Failed to load product", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPerfume();
     }, [params.slug]);
 
     if (loading) return <div className="min-h-screen bg-[#050505] flex items-center justify-center text-[#d4af37]">Loading...</div>;

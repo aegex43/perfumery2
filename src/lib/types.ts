@@ -6,11 +6,11 @@ export interface Perfume {
   price8ml: number;
   price30ml: number;
   retailPrice: number;
-  inspiration: string;
+  inspiration: string | null;
   // Image paths (computed)
-  bottleImage?: string;
-  notesImage?: string;
-  scentProfileImage?: string;
+  bottleImage?: string | null;
+  notesImage?: string | null;
+  scentProfileImage?: string | null;
 }
 
 export type DecantSize = '2ml' | '6ml' | '8ml' | '30ml' | 'retail';

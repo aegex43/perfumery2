@@ -10,29 +10,35 @@ export default function Home() {
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load from local storage on mount (persistence for demo)
+  // Load from server on mount
   useEffect(() => {
-    const saved = localStorage.getItem('perfume_data');
-    if (saved) {
+    const fetchPerfumes = async () => {
       try {
-        const parsed = JSON.parse(saved);
-        // Auto-fix legacy data (jpg -> png) and ensure encoding
-        const fixed = parsed.map((p: Perfume) => ({
-          ...p,
-          bottleImage: p.bottleImage?.replace('.jpg', '.png').split('/').map(s => s.endsWith('.png') ? encodeURIComponent(decodeURIComponent(s)) : s).join('/'),
-          scentProfileImage: p.scentProfileImage?.replace('.jpg', '.png').split('/').map(s => s.endsWith('.png') ? encodeURIComponent(decodeURIComponent(s)) : s).join('/'),
-          notesImage: p.notesImage?.replace('.jpg', '.png').split('/').map(s => s.endsWith('.png') ? encodeURIComponent(decodeURIComponent(s)) : s).join('/'),
-        }));
-        setPerfumes(fixed);
+        const { getPerfumes } = await import('@/app/actions');
+        const data = await getPerfumes();
+        setPerfumes(data);
       } catch (e) {
-        console.error("Failed to load saved data");
+        console.error("Failed to load data", e);
       }
-    }
+    };
+    fetchPerfumes();
   }, []);
 
-  const handleImport = (data: Perfume[]) => {
+  const handleImport = async (data: Perfume[]) => {
+    // Optimistic update
     setPerfumes(data);
-    localStorage.setItem('perfume_data', JSON.stringify(data));
+
+    // Save to server
+    try {
+      const { uploadPerfumes } = await import('@/app/actions');
+      const result = await uploadPerfumes(data);
+      if (!result.success) {
+        console.error("Failed to save to server", result.error);
+        // Maybe revert? For now, just log.
+      }
+    } catch (e) {
+      console.error("Upload action failed", e);
+    }
   };
 
   const filteredPerfumes = perfumes.filter(p => {
